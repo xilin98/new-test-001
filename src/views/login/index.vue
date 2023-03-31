@@ -1,19 +1,21 @@
 <template>
-  <div>
+  <div class="container">
     <div>
       <van-nav-bar
+        class="navbar"
         left-text="返回"
         left-arrow
         @click-left="goBack"
         title="YexSys"
       ></van-nav-bar>
-      <van-form @submit="onSubmit">
+      <van-form @submit="onSubmit" class="form">
         <van-field
           name="username"
           placeholder="请输入用户名"
           left-icon="manager"
           v-model="username"
           :rules="userFormRules.username"
+          class="input-field"
         />
         <van-field
           type="password"
@@ -21,11 +23,12 @@
           placeholder="请输入密码"
           left-icon="lock"
           v-model="password"
+          class="input-field"
           :rules="userFormRules.password"
         />
-        <van-cell title="使用手机验证码登录" is-link to="/login-use-phone" />
-        <van-cell title="没有账号，去注册" is-link to="/register-use-phone" />
-        <van-button block type="primary" native-type="submit">
+        <van-cell title="使用手机验证码登录" is-link to="/login-use-phone" class="cell"/>
+        <van-cell title="没有账号，去注册" is-link to="/register-use-phone" class="cell"/>
+        <van-button block type="primary" native-type="submit" class="btn">
           登录
         </van-button>
       </van-form>
@@ -77,3 +80,48 @@ const goBack = () => {
   router.go(-1);
 };
 </script>
+
+
+<style scoped>
+.container {
+  height: 100vh;
+  background-color: #262626;
+}
+
+.navbar {
+  background-color: #262626 !important;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.form {
+  margin-top: 2rem;
+  width: 90%;
+  max-width: 325px;
+  border-radius: 8px;
+  background-color: #eeeeee;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-field {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.cell {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.btn {
+  margin-top: 1rem;
+  background-color: #262626;
+  border-color: #262626;
+  color: white;
+}
+
+</style>

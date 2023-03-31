@@ -75,9 +75,116 @@ export default defineConfig({
           },
         ],
 
+       [
+    ".container",
+        {
+          "height": "100vh",
+          "background-color": "#262626"
+        }
       ],
+    [
+    ".navbar",
+    {
+      "background-color": "#262626 !important",
+      "color": "white !important",
+      "box-shadow": "none !important"
+    }
+    ],
+    [
+    ".form",
+    {
+      "margin-top": "2rem",
+      "width": "90%",
+      "max-width": "325px",
+      "border-radius": "8px",
+      "background-color": "#eeeeee",
+      "padding": "1rem",
+      "display": "flex",
+      "flex-direction": "column",
+      "justify-content": "center",
+      "align-items": "center"
+    }
+  ],
+  [
+    ".input-field",
+    {
+      "width": "100%",
+      "margin": "0.5rem 0"
+    }
+  ],
+  [
+    ".cell",
+    {
+      "margin-top": "1rem",
+      "width": "100%"
+    }
+  ],
+  [
+    ".btn",
+    {
+      "margin-top": "1rem",
+      "background-color": "#262626",
+      "border-color": "#262626",
+      "color": "white"
+    }
+  ]
+]
+//       .container {
+//   height: 100vh;
+//   background-color: #262626;
+// }
+
+// .navbar {
+//   background-color: #262626 !important;
+//   color: white !important;
+//   box-shadow: none !important;
+// }
+
+// .form {
+//   margin-top: 2rem;
+//   width: 90%;
+//   max-width: 325px;
+//   border-radius: 8px;
+//   background-color: #eeeeee;
+//   padding: 1rem;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .input-field {
+//   width: 100%;
+//   margin: 0.5rem 0;
+// }
+
+// .cell {
+//   margin-top: 1rem;
+//   width: 100%;
+// }
+
+// .btn {
+//   margin-top: 1rem;
+//   background-color: #262626;
+//   border-color: #262626;
+//   color: white;
+// }
+
     }),
   ],
+  // css: {
+  //   preprocessorOptions: {
+  //     less: {
+  //       modifyVars: {
+  //         '--van-primary-color': '#262626',
+  //         'blue': '#3eaf7c',
+  //         'button-primary-background-color': '#3eaf7c',
+  //         'button-primary-border-color': '#3eaf7c',
+  //       },
+  //       javascriptEnabled: true,
+  //     },
+  //   },
+  // },
   build: {
     chunkSizeWarningLimit: 1000000, // 将代码块大小限制增加到1MB
   },

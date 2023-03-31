@@ -27,7 +27,10 @@
   --error-color: #c0392b;
   --info-color: #1989fa;
 }
-
+:root:root {
+  --van-primary-color: white;
+  --van-nav-bar-title-text-color: white;
+}
 body {
   background-color: var(--main-background-color);
   display: block;

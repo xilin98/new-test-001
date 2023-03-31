@@ -5,5 +5,6 @@ import "vant/lib/index.css";
 import "amfe-flexible";
 import router from "./router";
 import "uno.css";
+// main.js
 
 createApp(App).use(Vant).use(router). mount("#app");
