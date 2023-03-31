@@ -1,34 +1,38 @@
 import axios from "axios";
-import store from "../store";
+
+import { useState } from "../store";
+const { userInfo } = useState();
+
+const baseURL = process.env.NODE_ENV === 'development'
+  ? import.meta.env.VITE_APP_URL_DEV
+  : import.meta.env.VITE_APP_URL_PROD
+
 const request = axios.create({
-  baseURL: import.meta.env.VITE_APP_URL,
+  baseURL: baseURL,
 });
 
-//请求拦截器
 request.interceptors.request.use(
   function (config) {
-    //请求发送会经过这里
-    //config:本次请求的请求配置对象
-    const user = store.state.user;
-    if (user && user.myToken) {
-      config.headers.Authorization = `Bearer ${user.myToken}`;
+    console.log("origin request", config);
+    console.log("current state", { userInfo: userInfo.value });
+    if (userInfo.value && userInfo.value.token) {
+      config.headers.Authorization = `Bearer ${userInfo.value.token}`;
     }
     return config;
   },
+
   function (err) {
-    //如果请求出错了，会被执行
     return Promise.reject(err);
   }
 );
 
-//响应拦截器
 request.interceptors.response.use(
   function (response) {
-    //响应成功进入这里
+    console.log("original response", response);
     return response;
   },
   function (err) {
-    //响应失败进入这里
+    console.log("error response", err.response);
     return Promise.reject(err);
   }
 );

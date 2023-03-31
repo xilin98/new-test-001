@@ -1,31 +1,67 @@
 <template>
-  <van-nav-bar title="Listing" left-text="返回" left-arrow @click-left="goBack">
-    <template #right>
-      <van-icon name="search" />
-    </template>
-  </van-nav-bar>
-  <van-dropdown-menu>
-    <van-dropdown-item v-model="value1" :options="option1" />
-    <van-dropdown-item v-model="value2" :options="option2" />
-  </van-dropdown-menu>
+  <van-sticky>
+    <van-nav-bar
+      title="Listing 管理"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+    >
+    </van-nav-bar>
+  </van-sticky>
+  <filter-search></filter-search>
+
+  <van-list
+    v-model:loading="loading"
+    :finished="finished"
+    finished-text="没有更多了"
+    @load="onLoad"
+    >
+      <van-collapse
+        v-model="activePOIList" 
+      >
+      <listing-item 
+        v-for="item in list" :item="item" :key="item.key" 
+      >
+    </listing-item>
+    </van-collapse>
+  </van-list>
+  <van-back-top bottom="10vh" />
+
+
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-const router = useRouter();
-const value1 = ref(0);
-const value2 = ref("a");
-const option1 = [
-  { text: "已受理", value: 0 },
-  { text: "处理中", value: 1 },
-];
-const option2 = [
-  { text: "默认排序", value: "a" },
-  { text: "首字母排序", value: "b" },
-];
+import { ref, computed } from "vue";
+import { useState } from "../../store";
+import FilterSearch from "../../components/FilterSearch.vue";
+// import FilterSearch from "../../components/FilterSearch.vue";
+import { fuseSearch } from "../../utils/search"
 
-const goBack = () => {
-  router.go(-1);
+import { getPOI } from "../../api/poi";
+
+
+import ListingItem from "./ListingItem.vue";
+import { keywords } from "../../store"
+
+const activePOIList = ref([])
+
+const { POIList } = useState();
+
+const loading = ref(false);
+const finished = ref(false);
+
+const list = computed(() => {
+  return fuseSearch({list: POIList.value, keywords:keywords.value }, );
+});
+
+const onLoad = async () => {
+  loading.value = true;
+  const getPOISuccess = await getPOI();
+  if (getPOISuccess) {
+    loading.value = false;
+    finished.value = true;
+  }
 };
+
+const onClickLeft = () => history.back();
 </script>

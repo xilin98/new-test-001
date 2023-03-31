@@ -2,12 +2,58 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+
+    <!-- 固定视窗大小 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YexSys 管理系统</title>
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta
+      name="viewport"
+      content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+
+<!-- 引入 AMap UI 组件库 -->
+<!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-map.css" />
+ -->
+
+    <title>YexSys | 业询科技</title>
   </head>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin:0;
+      padding:0;
+    }
+  </style>
+
   <body>
+    <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+    <!-- <script src="https://webapi.amap.com/maps?v=1.4.15&key=d61054a14279b4089a3b8cb09469eb01"></script> -->
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <!-- <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/ui.js"></script> -->
   </body>
 </html>

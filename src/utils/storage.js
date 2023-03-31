@@ -1,19 +1,29 @@
 export const setItem = (key, value) => {
-  if (typeof value === "object") {
-    value = JSON.stringify(value);
+  
+  try {
+    if (typeof value === "object") {
+      value = JSON.stringify(value);
+    }
+    window.localStorage.setItem(key, value);
+  } catch (e) {
+    console.error(e);
   }
-  window.localStorage.setItem(key, value);
 };
 
 export const getItem = (key) => {
-  const data = window.localStorage.getItem(key);
   try {
+    const data = window.localStorage.getItem(key);
     return JSON.parse(data);
   } catch (e) {
-    return data;
+    console.error(e);
+    return null;
   }
 };
 
 export const removeItem = (key) => {
-  window.localStorage.removeItem(key);
+  try {
+    window.localStorage.removeItem(key);
+  } catch (e) {
+    console.error(e);
+  }
 };

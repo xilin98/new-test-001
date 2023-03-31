@@ -1,5 +1,6 @@
 <template>
-  <van-nav-bar
+  <div>
+<van-nav-bar
     title="POI 管理"
     left-text="返回"
     left-arrow
@@ -10,67 +11,71 @@
         icon="plus"
         type="primary"
         plain
-        class="createBtn"
         @click="createPoi"
+        border-none
         >新建</van-button
       >
     </template>
+    
   </van-nav-bar>
-
-  <van-search
-    v-model="value"
-    placeholder="请输入搜索关键词"
-    input-align="center"
-  />
+  <filter-search></filter-search>
+  
   <van-list
     v-model:loading="loading"
     :finished="finished"
     finished-text="没有更多了"
     @load="onLoad"
   >
-    <poi-item v-for="item in list" :key="item" :title="item" />
+
+  <poi-item v-for="item in list" :key="item.username" :item="item" p-0.5>
+  </poi-item>
   </van-list>
+
+
+  
   <van-back-top bottom="10vh" />
+
+  </div>
+  
+  
 </template>
 
 <script setup>
-import { ref } from "vue";
-import PoiItem from "./components/PoiItem.vue";
+import { ref, computed } from "vue";
+import { useState } from "../../store";
 import { useRouter } from "vue-router";
-import router from "../../router";
 
-const onClickLeft = () => history.back();
-const list = ref([]);
+import PoiItem from "./PoiItem.vue";
+import FilterSearch from "../../components/FilterSearch.vue";
+
+import { getPOI } from "../../api/poi";
+import { fuseSearch } from "../../utils/search"
+import { keywords } from "../../store"
+
+const router = useRouter();
+const {POIList} = useState();
+
 const loading = ref(false);
 const finished = ref(false);
 
-const onLoad = () => {
-  // 异步更新数据
-  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      list.value.push(list.value.length + 1);
-    }
+const list = computed(() => {
+  return fuseSearch({list: POIList.value, keywords:keywords.value }, );
+});
 
-    // 加载状态结束
+const onLoad = async () => {
+  loading.value = true;
+  const getPOISuccess = await getPOI();
+  if (getPOISuccess) {
     loading.value = false;
-
-    // 数据全部加载完成
-    if (list.value.length >= 40) {
-      finished.value = true;
-    }
-  }, 1000);
+    finished.value = true;
+  }
 };
+
 
 const createPoi = () => {
   console.log("createPoi");
   router.push("/add-poi");
 };
-</script>
 
-<style scoped>
-.createBtn {
-  height: 80%;
-  border: none;
-}
-</style>
+const onClickLeft = () => history.back();
+</script>

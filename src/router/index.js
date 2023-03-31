@@ -1,6 +1,12 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-
+import {useState} from "../store";
+const {userInfo} = useState();
 const routes = [
+  {
+    path: "/test",
+    name: "test",
+    component: () => import("../views/test/index.vue"),
+  },
   {
     path: "/login",
     name: "login",
@@ -14,7 +20,7 @@ const routes = [
   {
     path: "/poi-item",
     name: "poi-item",
-    component: () => import("../views/poi/components/PoiItem.vue"),
+    component: () => import("../views/poi/PoiItem.vue"),
   },
   {
     path: "/add-poi",
@@ -22,10 +28,15 @@ const routes = [
     component: () => import("../views/add-poi/index.vue"),
   },
   {
-    path: "/test/input-position",
+    path: "/input-position",
 
-    name: "test-input-position",
+    name: "input-position",
     component: () => import("../views/input-position/index.vue"),
+  },
+  {
+    path: "/register-sub/:commandId",
+    name: "register-sub",
+    component: () => import("../views/subuser-register/index.vue"),
   },
   {
     path: "/register",
@@ -33,9 +44,19 @@ const routes = [
     component: () => import("../views/register/index.vue"),
   },
   {
-    path: "/poi-edit",
-    name: "poi-edit",
-    component: () => import("../views/poi-edit/index.vue"),
+    path: "/register-use-phone",
+    name: "register-use-phone",
+    component: () => import("../views/register-use-phone/index.vue"),
+  },
+  {
+    path: "/edit-user-info",
+    name: "edit-user-info",
+    component: () => import("../views/edit-user-info/index.vue"),
+  },
+  {
+    path: "/edit-poi",
+    name: "edit-poi",
+    component: () => import("../views/edit-poi/index.vue"),
   },
   {
     path: "/layout",
@@ -58,23 +79,31 @@ const routes = [
         name: "my",
         component: () => import("../views/my/index.vue"),
       },
-
-      {
-        path: "/edit-user-info",
-        name: "edit-user-info",
-        component: () => import("../views/edit-user-info/index.vue"),
-      },
       {
         path: "/poi",
         name: "poi",
         component: () => import("../views/poi/index.vue"),
       },
       {
+        path: "/single",
+        name:  "single",
+        component: () => import("../views/singleListing/index.vue")
+      },
+      {
         path: "/listing",
         name: "listing",
         component: () => import("../views/listing/index.vue"),
       },
+      {
+        path: "/subuser",
+        name: "subuser",
+        component: () => import("../views/subuser/index.vue"),
+      },
     ],
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/",
   },
 ];
 
@@ -83,17 +112,24 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.path == "/login" || to.path == "/register") {
-//     next();
-//   } else {
-//     let token = localStorage.getItem("token");
-//     if (token == null || token == "") {
-//       next("/login");
-//     } else {
-//       next();
-//     }
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (
+    to.path == "/login" ||
+    to.path == "/login-use-phone" ||
+    to.path == "/register" ||
+    to.path == "/register-use-phone" ||
+    to.path == "/register-sub" ||
+    to.path == "/test"
+  ) {
+    next();
+  } else {
+    const token = userInfo?.value?.token;
+    if (!token) {
+      next("/login-use-phone");
+    } else {
+      next();
+    }
+  }
+});
 
 export default router;

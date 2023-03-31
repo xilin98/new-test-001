@@ -1,35 +1,27 @@
 <template>
-  <div class="register-page">
+  <div>
     <van-nav-bar left-text="返回" left-arrow @click-left="goBack">
       修改商铺信息
     </van-nav-bar>
-    <van-form class="register-form">
+    <van-form>
       <van-field
-        v-model="form.username"
-        label="商铺名"
-        placeholder="请输入商铺名"
-        :rules="rules.username"
-      />
-
-      <van-field
-        v-model="form.email"
+        v-model="email"
         type="email"
         label="邮箱"
-        placeholder="请输入邮箱"
+        placeholder="请输入新邮箱"
         :rules="rules.email"
       />
 
       <van-field
-        v-model="form.phone"
-        type="phone"
-        label="电话"
-        placeholder="请输入电话号码"
-        :rules="rules.phone"
+        v-model="brandname"
+        label="品牌名"
+        placeholder="请输入新的品牌名"
+        :rules="rules.brandname"
+        v-if="userInfo.value.permission < 4"
       />
 
-      <van-field v-model="form.brandId" label="品牌ID" placeholder="选填" />
-      <div class="btnWrapper">
-        <van-button type="primary" block @click="register"> 确认 </van-button>
+      <div flex>
+        <van-button type="primary" block @click="onUpdate"> 确认 </van-button>
         <van-button @click="goBack" block> 取消 </van-button>
       </div>
     </van-form>
@@ -38,67 +30,38 @@
 
 <script setup>
 import { ref } from "vue";
+import { useState } from "../../store";
 import { useRouter } from "vue-router";
+
 const router = useRouter();
-const form = ref({
-  username: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  brandId: "",
-});
+
+const {updateUserInfo, userInfo } = useState();
+
+const email = ref(userInfo.value.email);
+const brandname = ref(userInfo.value.brandname);
+const username = ref(userInfo.value.username);
 
 // 表单验证规则
 const rules = ref({
-  username: [{ required: true, message: "用户名不能为空" }],
   email: [
     { required: true, message: "邮箱不能为空" },
     { type: "email", message: "请输入正确的邮箱" },
   ],
-  password: [
-    { required: true, message: "请输入密码" },
-    // 包含大小写字母，且长度大于8
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}$/,
-      message: "密码必须包含大小写字母，且长度大于8",
-    },
-  ],
-  confirmPassword: [
-    { required: true, message: "请再次输入密码" },
-    {
-      validator: (rule, value) => {
-        if (value !== form.password) {
-          return "两次输入密码不一致";
-        }
-        return true;
-      },
-    },
-  ],
+  brandname: {
+    required: true,
+    message: "品牌名不能为空",
+  },
 });
 
 const goBack = () => {
-  // 返回上一页
   router.back();
 };
 
-const register = () => {
-  // 提交表单逻辑，这里可以使用 axios 或者 fetch 等方法发送请求
-  console.log(form.value);
+const onUpdate = () => {
+  updateUserInfo({
+    brandname: brandname.value,
+    email: email.value,
+    username: username.value,
+  });
 };
 </script>
-
-<style scoped>
-.register-form {
-  margin: 20px;
-  width: 80%;
-}
-.btnWrapper {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.btnWrapper > button {
-  width: 45%;
-}
-</style>

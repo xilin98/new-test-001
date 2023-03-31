@@ -1,96 +1,58 @@
 <template>
-  <div class="container">
-    <div class="login-form">
-      <van-nav-bar title="YexSys" class="page-nav-bar"></van-nav-bar>
-      <van-form @submit="onSubmit">
+  <div w-full h-full>
+    <van-nav-bar title="YexSys" class="page-nav-bar"></van-nav-bar>
+    <van-form @submit="onSubmit">
+      <van-field
+        name="电话号码"
+        placeholder="请输入手机号"
+        left-icon="phone"
+        v-model="phone"
+        :rules="userFormRules.phone"
+      />
+      <div flex>
         <van-field
-          name="电话号码"
-          placeholder="请输入手机号"
-          left-icon="phone"
-          v-model="phone"
-          :rules="userFormRules.phone"
+          type="number"
+          name="验证码"
+          placeholder="请输入验证码"
+          left-icon="smile-comment-o"
+          v-model="verify"
         />
-        <div class="twoBtn">
-          <van-button type="primary" block class="vertifyBtn" plain
-            >发送验证码</van-button
-          >
-          <van-field
-            type="number"
-            name="验证码"
-            placeholder="请输入验证码"
-            left-icon="smile-comment-o"
-            v-model="vertifyCode"
-            :rules="userFormRules.vertifyCode"
-          />
-        </div>
-        <van-cell title="使用密码登录" is-link to="/login" />
-        <div style="margin: 16px">
-          <van-button block type="primary" native-type="submit">
-            登录
-          </van-button>
-        </div>
-      </van-form>
-    </div>
+        <SendVerifyBotton :phone="phone" w-35 />
+      </div>
+      <van-cell title="使用密码登录" is-link to="/login" />
+      <van-cell title="没有账号, 去注册" is-link to="/register-use-phone" />
+      <van-button block type="primary" native-type="submit"> 登录 </van-button>
+    </van-form>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { ref } from "vue";
 import { login } from "../../api/user";
-import { Toast } from "vant";
-import { useStore } from "vuex";
-import router from "../../router";
-const store = useStore();
+import { showFailToast, showLoadingToast, showSuccessToast } from "vant";
+import { useRouter } from "vue-router";
+import SendVerifyBotton from "../../components/SendVerifyBotton.vue";
+const router = useRouter();
 
-const userLoginInfo = reactive({
-  username: "",
-  password: "",
-});
+const phone = ref("");
+const verify = ref("");
 
 const userFormRules = {
-  username: [{ required: true, message: "请输入用户名" }],
-  password: [
-    { required: true, message: "请输入密码" },
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,}$/,
-      message: "密码必须包含大小写字母和数字, 且长度不小于8位",
-    },
-  ],
+  phone: [{ required: true, message: "电话号码不能为空" }],
+  // verify: [{ required: true, message: "验证码不能为空" }],
 };
 
 const onSubmit = async () => {
-  Toast.loading({
+  showLoadingToast({
     message: "登录中...",
     forbidClick: true,
   });
-  const { data } = await login(user);
-  if (data.code === 200) {
-    store.commit("setUser", res.data);
-    Toast.success("用户登录成功");
+  const res = await login({ phone: phone.value, verify: verify.value });
+  if (res) {
+    showSuccessToast("用户登录成功");
     router.push("/");
   } else {
-    Toast.fail("用户名或密码错误");
+    showFailToast("登录失败");
   }
 };
 </script>
-
-<style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-}
-
-.login-form {
-  padding: 20px;
-  width: 80%;
-}
-.twoBtn {
-  display: flex;
-  justify-content: space-between;
-}
-.vertifyBtn {
-  margin-right: 10px;
-  width: 70%;
-  height: 35px;
-}
-</style>

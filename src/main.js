@@ -4,6 +4,6 @@ import Vant from "vant";
 import "vant/lib/index.css";
 import "amfe-flexible";
 import router from "./router";
-import "./styles/index.css";
-import store from "./store";
-createApp(App).use(Vant).use(router).use(store).mount("#app");
+import "uno.css";
+
+createApp(App).use(Vant).use(router). mount("#app");

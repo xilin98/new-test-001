@@ -11,18 +11,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from "vue";
-import { useStore } from "vuex";
+import {} from "../../store";
 
-export default {
-  setup() {
-    const active = ref(0);
-    const store = useStore();
-    const userState = computed(() => store.state.user);
-    return { active, userState };
-  },
-};
+const active = ref(0);
 </script>
-
-<style></style>

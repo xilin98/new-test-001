@@ -1,4 +1,5 @@
 <template>
+  
   <div id="map_smooth" class="map_smooth"></div>
 </template>
 
@@ -6,21 +7,13 @@
 import * as echarts from "echarts";
 export default {
   name: "ComplexSmoothMap",
-  // data() {
-  //     return {
-  //         data: this.map_data
-  //     }
-  // },
   mounted() {
     this.complex_map();
   },
   methods: {
     complex_map() {
       var myChart = echarts.init(document.getElementById("map_smooth"));
-      // var data = this.data
-      var option;
-
-      option = {
+      var option = {
         title: {
           text: "",
         },
@@ -88,7 +81,7 @@ export default {
         ],
       };
 
-      option && myChart.setOption(option);
+      myChart.setOption(option);
     },
   },
 };
